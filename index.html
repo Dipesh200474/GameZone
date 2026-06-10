@@ -6,96 +6,64 @@
 <title>GameZone - Free Online Games</title>
 <style>
   :root {
-    --primary: #6C5CE7;
-    --primary-dark: #4834D4;
-    --primary-light: #A29BFE;
-    --accent: #00CEC9;
-    --bg: #0F0F1A;
-    --bg2: #1A1A2E;
-    --bg3: #16213E;
-    --card: #1E1E35;
-    --card-hover: #252545;
-    --text: #EAEAF5;
-    --text2: #9898B8;
-    --border: rgba(108,92,231,0.25);
-    --hot: #FF6B6B;
-    --new: #00CEC9;
-    --top: #FDCB6E;
-    --radius: 12px;
-    --radius-sm: 8px;
+    --primary: #6C5CE7; --primary-dark: #4834D4; --primary-light: #A29BFE;
+    --accent: #00CEC9; --bg: #0F0F1A; --bg2: #1A1A2E; --bg3: #16213E;
+    --card: #1E1E35; --card-hover: #252545; --text: #EAEAF5; --text2: #9898B8;
+    --border: rgba(108,92,231,0.25); --hot: #FF6B6B; --top: #FDCB6E; --radius: 12px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); }
-
-  /* NAVBAR */
   nav { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0 1rem; height: 56px; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; }
-  .logo { font-size: 20px; font-weight: 700; color: var(--primary-light); white-space: nowrap; }
+  .logo { font-size: 20px; font-weight: 700; color: var(--primary-light); }
   .logo span { color: var(--accent); }
   .search-wrap { flex: 1; max-width: 380px; display: flex; align-items: center; background: var(--bg3); border: 1px solid var(--border); border-radius: 99px; padding: 0 12px; gap: 8px; height: 36px; }
   .search-wrap input { background: transparent; border: none; outline: none; color: var(--text); font-size: 13px; flex: 1; }
   .search-wrap input::placeholder { color: var(--text2); }
-
-  /* CATEGORIES */
-  .cats { background: var(--bg2); border-bottom: 1px solid var(--border); display: flex; gap: 4px; padding: 0 1rem; overflow-x: auto; }
-  .cats::-webkit-scrollbar { display: none; }
+  .cats { background: var(--bg2); border-bottom: 1px solid var(--border); display: flex; gap: 4px; padding: 0 1rem; overflow-x: auto; scrollbar-width: none; }
   .cat { padding: 10px 14px; font-size: 12px; color: var(--text2); border: none; background: transparent; cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; }
   .cat.active { color: var(--primary-light); border-bottom-color: var(--primary); font-weight: 600; }
-
-  /* MAIN */
   .main { padding: 1rem; max-width: 1200px; margin: 0 auto; }
-
-  /* HERO */
   .hero { background: linear-gradient(135deg, #4834D4, #6C5CE7, #00CEC9); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; }
   .hero h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
   .hero p { font-size: 13px; opacity: 0.85; margin-bottom: 1rem; }
   .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; }
   .btn-white { background: white; color: var(--primary-dark); border: none; padding: 9px 20px; border-radius: 99px; font-weight: 600; font-size: 13px; cursor: pointer; }
   .btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.6); padding: 8px 18px; border-radius: 99px; font-size: 13px; cursor: pointer; }
-
-  /* SECTION */
   .section { margin-bottom: 2rem; }
   .sec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
   .sec-head h2 { font-size: 16px; font-weight: 600; }
-  .see-all { font-size: 12px; color: var(--primary-light); cursor: pointer; }
-
-  /* GAMES GRID */
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; }
   .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: all 0.2s; }
   .card:hover { background: var(--card-hover); border-color: var(--primary); transform: translateY(-2px); }
   .thumb { height: 100px; display: flex; align-items: center; justify-content: center; font-size: 40px; position: relative; }
   .badge { position: absolute; top: 6px; left: 6px; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 99px; }
   .badge-hot { background: var(--hot); color: white; }
-  .badge-new { background: var(--new); color: #003d3b; }
+  .badge-new { background: #00CEC9; color: #003d3b; }
   .badge-top { background: var(--top); color: #4a3500; }
   .badge-multi { background: #FD79A8; color: #5a0025; }
-  .play-over { position: absolute; inset: 0; background: rgba(108,92,231,0.75); display: flex; align-items: center; justify-content: center; font-size: 26px; opacity: 0; transition: 0.2s; }
+  .play-over { position: absolute; inset: 0; background: rgba(108,92,231,0.75); display: flex; align-items: center; justify-content: center; font-size: 26px; opacity: 0; transition: 0.2s; border-radius: 0; }
   .card:hover .play-over { opacity: 1; }
   .cinfo { padding: 8px 10px; }
   .cinfo h3 { font-size: 12px; font-weight: 600; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .cmeta { font-size: 11px; color: var(--text2); }
   .stars { color: var(--top); }
-
-  /* GAME MODAL */
-  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 200; flex-direction: column; }
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 200; flex-direction: column; }
   .overlay.open { display: flex; }
-  .modal-bar { background: var(--bg2); padding: 10px 1rem; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
+  .modal-bar { background: var(--bg2); padding: 10px 1rem; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
   .modal-bar h3 { font-size: 15px; font-weight: 600; flex: 1; }
-  .close-btn { background: var(--card); border: 1px solid var(--border); color: var(--text); width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-  .fullscreen-btn { background: var(--primary); border: none; color: white; padding: 6px 14px; border-radius: 99px; font-size: 12px; cursor: pointer; }
+  .close-btn { background: var(--card); border: 1px solid var(--border); color: var(--text); width: 34px; height: 34px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .fs-btn { background: var(--primary); border: none; color: white; padding: 7px 14px; border-radius: 99px; font-size: 12px; cursor: pointer; white-space: nowrap; }
   #gameFrame { flex: 1; border: none; width: 100%; background: #000; }
-  .loading-screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; }
-  .spinner { width: 48px; height: 48px; border: 4px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  .loading { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; }
+  .spinner { width: 50px; height: 50px; border: 4px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-screen p { color: var(--text2); font-size: 14px; }
-
-  /* TOAST */
-  .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--primary); color: white; padding: 10px 18px; border-radius: var(--radius-sm); font-size: 13px; z-index: 999; opacity: 0; transform: translateY(10px); transition: all 0.3s; pointer-events: none; }
+  .loading p { color: var(--text2); font-size: 14px; }
+  .loading .game-emoji { font-size: 48px; animation: bounce 1s ease infinite alternate; }
+  @keyframes bounce { to { transform: translateY(-10px); } }
+  .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--primary); color: white; padding: 10px 18px; border-radius: 8px; font-size: 13px; z-index: 999; opacity: 0; transform: translateY(10px); transition: all 0.3s; pointer-events: none; }
   .toast.show { opacity: 1; transform: translateY(0); }
-
-  /* FOOTER */
   footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 1.5rem; text-align: center; font-size: 12px; color: var(--text2); margin-top: 2rem; }
-
-  @media (max-width: 480px) { .grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); } }
+  @media (max-width: 400px) { .grid { grid-template-columns: repeat(2, 1fr); } }
 </style>
 </head>
 <body>
@@ -104,11 +72,11 @@
   <div class="logo">Game<span>Zone</span></div>
   <div class="search-wrap">
     <span>🔍</span>
-    <input type="text" placeholder="Game search karo..." id="searchInput" oninput="filterGames(this.value)">
+    <input type="text" placeholder="Game search karo..." oninput="filterGames(this.value)">
   </div>
 </nav>
 
-<div class="cats" id="catBar">
+<div class="cats">
   <button class="cat active" onclick="filterCat(this,'All')">🎮 Sab</button>
   <button class="cat" onclick="filterCat(this,'Action')">⚔️ Action</button>
   <button class="cat" onclick="filterCat(this,'Racing')">🏎️ Racing</button>
@@ -118,7 +86,6 @@
   <button class="cat" onclick="filterCat(this,'Adventure')">🗺️ Adventure</button>
   <button class="cat" onclick="filterCat(this,'Arcade')">👾 Arcade</button>
   <button class="cat" onclick="filterCat(this,'Strategy')">🧠 Strategy</button>
-  <button class="cat" onclick="filterCat(this,'Horror')">👻 Horror</button>
 </div>
 
 <div class="main">
@@ -127,81 +94,80 @@
     <p>Real games — seedha browser mein, koi download nahi!</p>
     <div class="hero-btns">
       <button class="btn-white" onclick="playRandom()">🎲 Random Game</button>
-      <button class="btn-outline" onclick="showToast('500+ games available!')">📋 Sab Games</button>
+      <button class="btn-outline" onclick="showToast('20+ games available!')">📋 Sab Games</button>
     </div>
   </div>
 
   <div class="section">
-    <div class="sec-head"><h2>🔥 Trending Games</h2><span class="see-all">Sab dekhein →</span></div>
+    <div class="sec-head"><h2>🔥 Sab Games</h2></div>
     <div class="grid" id="mainGrid"></div>
   </div>
 </div>
 
-<footer>© 2025 GameZone — Free Online Games 🎮 | Sab games free hain!</footer>
+<footer>© 2025 GameZone — Free Online Games 🎮</footer>
 
 <!-- GAME MODAL -->
 <div class="overlay" id="overlay">
   <div class="modal-bar">
     <button class="close-btn" onclick="closeGame()">✕</button>
     <h3 id="gameTitle">Game</h3>
-    <button class="fullscreen-btn" onclick="goFullscreen()">⛶ Full Screen</button>
+    <button class="fs-btn" onclick="goFullscreen()">⛶ Full Screen</button>
   </div>
-  <div class="loading-screen" id="loadingScreen">
+  <div class="loading" id="loadingDiv">
+    <div class="game-emoji" id="loadEmoji">🎮</div>
     <div class="spinner"></div>
-    <p>Game load ho rahi hai...</p>
+    <p id="loadText">Game load ho rahi hai...</p>
   </div>
-  <iframe id="gameFrame" style="display:none" allowfullscreen allow="autoplay; fullscreen"></iframe>
+  <iframe id="gameFrame" style="display:none" allowfullscreen allow="autoplay; fullscreen; gamepad"></iframe>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// Real games from GameDistribution & other free sources
 const games = [
-  // GameDistribution real embed URLs
-  { name:"Moto X3M", icon:"🏍️", bg:"#1E1535", rating:"4.8", plays:"12M", badge:"hot", cat:"Racing",
-    url:"https://html5.gamedistribution.com/rvvASMiM/?gd_sdk_referrer_url=https://gamezone.com" },
-  { name:"2048", icon:"🔢", bg:"#1E2535", rating:"4.7", plays:"20M", badge:"top", cat:"Puzzle",
-    url:"https://html5.gamedistribution.com/66fd7b7a7a3c4b0d98b8ae1853e9e1de/?gd_sdk_referrer_url=https://gamezone.com" },
-  { name:"Knife Hit", icon:"🔪", bg:"#2E1535", rating:"4.6", plays:"8M", badge:"hot", cat:"Arcade",
-    url:"https://html5.gamedistribution.com/96cebc67c83b4f9a9b49e6c1f0f7d7b1/?gd_sdk_referrer_url=https://gamezone.com" },
-  { name:"Helix Jump", icon:"🌀", bg:"#1E2A35", rating:"4.5", plays:"15M", badge:"hot", cat:"Arcade",
-    url:"https://html5.gamedistribution.com/d6cc4b0f8b4b4c8c9b7a5e2f3d1c6a8b/?gd_sdk_referrer_url=https://gamezone.com" },
-  { name:"Stack", icon:"📦", bg:"#1E3525", rating:"4.4", plays:"10M", badge:"top", cat:"Arcade",
-    url:"https://html5.gamedistribution.com/a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6/?gd_sdk_referrer_url=https://gamezone.com" },
-  { name:"Subway Surfers", icon:"🏃", bg:"#35251E", rating:"4.9", plays:"50M", badge:"hot", cat:"Arcade",
-    url:"https://html5.gamedistribution.com/SubwaySurfers/?gd_sdk_referrer_url=https://gamezone.com" },
-  { name:"Stickman Hook", icon:"🕷️", bg:"#251E35", rating:"4.6", plays:"7M", badge:"new", cat:"Action",
-    url:"https://html5.gamedistribution.com/7fd7a7a7a7a74b0d98b8ae1853e9e1de/?gd_sdk_referrer_url=https://gamezone.com" },
-  { name:"Vex 3", icon:"🏃", bg:"#1E1E35", rating:"4.7", plays:"6M", badge:"top", cat:"Action",
-    url:"https://html5.gamedistribution.com/vex3/?gd_sdk_referrer_url=https://gamezone.com" },
-  { name:"Paper.io 2", icon:"📄", bg:"#2A1E35", rating:"4.5", plays:"9M", badge:"multi", cat:"Strategy",
-    url:"https://html5.gamedistribution.com/paperio2/?gd_sdk_referrer_url=https://gamezone.com" },
-  { name:"Tank Trouble", icon:"🪖", bg:"#1E2A1E", rating:"4.4", plays:"5M", badge:"multi", cat:"Shooting",
-    url:"https://html5.gamedistribution.com/tanktrouble/?gd_sdk_referrer_url=https://gamezone.com" },
-  { name:"Basketball Stars", icon:"🏀", bg:"#35201E", rating:"4.7", plays:"11M", badge:"multi", cat:"Sports",
-    url:"https://html5.gamedistribution.com/basketballstars/?gd_sdk_referrer_url=https://gamezone.com" },
-  { name:"Snake.io", icon:"🐍", bg:"#1E351E", rating:"4.6", plays:"13M", badge:"hot", cat:"Arcade",
-    url:"https://html5.gamedistribution.com/snakeio/?gd_sdk_referrer_url=https://gamezone.com" },
-  { name:"Fireboy & Watergirl", icon:"🔥", bg:"#2A1E1E", rating:"4.8", plays:"18M", badge:"top", cat:"Adventure",
-    url:"https://html5.gamedistribution.com/fireboyandwatergirlforest/?gd_sdk_referrer_url=https://gamezone.com" },
-  { name:"Cut the Rope", icon:"🎯", bg:"#1E2A35", rating:"4.7", plays:"14M", badge:"top", cat:"Puzzle",
-    url:"https://html5.gamedistribution.com/cuttherope/?gd_sdk_referrer_url=https://gamezone.com" },
-  { name:"Bubble Shooter", icon:"🔵", bg:"#251E2A", rating:"4.5", plays:"16M", badge:"hot", cat:"Puzzle",
-    url:"https://html5.gamedistribution.com/bubbleshooter/?gd_sdk_referrer_url=https://gamezone.com" },
-  { name:"Hill Climb Racing", icon:"🚗", bg:"#2A2A1E", rating:"4.8", plays:"22M", badge:"hot", cat:"Racing",
-    url:"https://html5.gamedistribution.com/hillclimbracing/?gd_sdk_referrer_url=https://gamezone.com" },
-  { name:"Angry Birds", icon:"🐦", bg:"#1E2535", rating:"4.9", plays:"30M", badge:"top", cat:"Action",
-    url:"https://html5.gamedistribution.com/angrybirds/?gd_sdk_referrer_url=https://gamezone.com" },
-  { name:"Among Us", icon:"👨‍🚀", bg:"#2A351E", rating:"4.8", plays:"25M", badge:"multi", cat:"Strategy",
-    url:"https://html5.gamedistribution.com/amongus/?gd_sdk_referrer_url=https://gamezone.com" },
-  { name:"Dino Game", icon:"🦕", bg:"#1E1E2A", rating:"4.3", plays:"8M", badge:"new", cat:"Arcade",
+  { name:"Moto X3M",        icon:"🏍️", bg:"#1a1030", rating:"4.8", plays:"12M", badge:"hot",  cat:"Racing",    emoji:"🏍️",
+    url:"https://www.crazygames.com/embed/moto-x3m" },
+  { name:"Subway Surfers",  icon:"🏃", bg:"#30201a", rating:"4.9", plays:"50M", badge:"hot",  cat:"Arcade",    emoji:"🏃",
+    url:"https://poki.com/embed/subway-surfers" },
+  { name:"2048",            icon:"🔢", bg:"#1a2030", rating:"4.7", plays:"20M", badge:"top",  cat:"Puzzle",    emoji:"🔢",
+    url:"https://play2048.co/" },
+  { name:"Dino Run",        icon:"🦕", bg:"#f5f5f5", rating:"4.5", plays:"8M",  badge:"hot",  cat:"Arcade",    emoji:"🦕",
     url:"https://chromedino.com/" },
-  { name:"Chess", icon:"♟️", bg:"#2A1E2A", rating:"4.7", plays:"7M", badge:"top", cat:"Strategy",
+  { name:"Chess",           icon:"♟️", bg:"#1a2530", rating:"4.7", plays:"7M",  badge:"top",  cat:"Strategy",  emoji:"♟️",
     url:"https://www.chess.com/play/computer" },
+  { name:"Tetris",          icon:"🧱", bg:"#0a0a2a", rating:"4.8", plays:"25M", badge:"top",  cat:"Puzzle",    emoji:"🧱",
+    url:"https://tetris.com/play-tetris" },
+  { name:"Pac-Man",         icon:"🟡", bg:"#1a1a0a", rating:"4.8", plays:"30M", badge:"top",  cat:"Arcade",    emoji:"🟡",
+    url:"https://www.google.com/logos/2010/pacman10-i.html" },
+  { name:"Tic Tac Toe",     icon:"❌", bg:"#2a1a1a", rating:"4.3", plays:"5M",  badge:"new",  cat:"Strategy",  emoji:"❌",
+    url:"https://playtictactoe.org/" },
+  { name:"Snake Game",      icon:"🐍", bg:"#0a2a0a", rating:"4.6", plays:"13M", badge:"hot",  cat:"Arcade",    emoji:"🐍",
+    url:"https://playsnake.org/" },
+  { name:"Flappy Bird",     icon:"🐦", bg:"#1a3a4a", rating:"4.4", plays:"18M", badge:"hot",  cat:"Arcade",    emoji:"🐦",
+    url:"https://flappybird.io/" },
+  { name:"Fireboy Watergirl",icon:"🔥",bg:"#1a0a2a", rating:"4.8", plays:"18M", badge:"top",  cat:"Adventure", emoji:"🔥",
+    url:"https://www.coolmathgames.com/0-fireboy-and-watergirl-in-the-forest-temple" },
+  { name:"Run 3",           icon:"👨‍🚀",bg:"#0a0a3a",rating:"4.7", plays:"14M", badge:"top",  cat:"Action",    emoji:"👨‍🚀",
+    url:"https://www.coolmathgames.com/0-run-3" },
+  { name:"Basketball",      icon:"🏀", bg:"#3a1a0a", rating:"4.5", plays:"9M",  badge:"multi",cat:"Sports",    emoji:"🏀",
+    url:"https://www.crazygames.com/embed/basketball-stars" },
+  { name:"Tank Battle",     icon:"🪖", bg:"#1a2a1a", rating:"4.4", plays:"5M",  badge:"multi",cat:"Shooting",  emoji:"🪖",
+    url:"https://www.crazygames.com/embed/tank-trouble" },
+  { name:"Drift Hunters",   icon:"🚗", bg:"#2a2a1a", rating:"4.8", plays:"10M", badge:"hot",  cat:"Racing",    emoji:"🚗",
+    url:"https://www.crazygames.com/embed/drift-hunters" },
+  { name:"Cut The Rope",    icon:"🍭", bg:"#1a2a3a", rating:"4.7", plays:"14M", badge:"top",  cat:"Puzzle",    emoji:"🍭",
+    url:"https://www.cuttherope.app/" },
+  { name:"Slope",           icon:"🔵", bg:"#0a1a2a", rating:"4.6", plays:"11M", badge:"hot",  cat:"Arcade",    emoji:"🔵",
+    url:"https://slope-game.github.io/" },
+  { name:"Bubble Shooter",  icon:"🫧", bg:"#2a1a3a", rating:"4.5", plays:"16M", badge:"hot",  cat:"Puzzle",    emoji:"🫧",
+    url:"https://www.bubbleshooter.net/" },
+  { name:"Stickman Archer", icon:"🏹", bg:"#1a1a1a", rating:"4.4", plays:"6M",  badge:"new",  cat:"Action",    emoji:"🏹",
+    url:"https://www.crazygames.com/embed/stickman-archer-online" },
+  { name:"Paper.io",        icon:"📄", bg:"#3a1a2a", rating:"4.5", plays:"9M",  badge:"multi",cat:"Strategy",  emoji:"📄",
+    url:"https://paper-io.com/" },
 ];
 
-let currentGames = [...games];
+let currentList = [...games];
 
 function render(list) {
   const grid = document.getElementById('mainGrid');
@@ -210,62 +176,65 @@ function render(list) {
     return;
   }
   grid.innerHTML = list.map(g => `
-    <div class="card" onclick="playGame('${g.url}','${g.name}')">
+    <div class="card" onclick="playGame('${g.url}','${g.name}','${g.emoji}')">
       <div class="thumb" style="background:${g.bg}">
-        ${g.icon}
-        <span class="badge badge-${g.badge}">${g.badge==='hot'?'🔥':g.badge==='new'?'✨':g.badge==='top'?'🏆':'👥'}</span>
+        <span style="font-size:40px">${g.icon}</span>
+        <span class="badge badge-${g.badge}">${{hot:'🔥 Hot',new:'✨ New',top:'🏆 Top',multi:'👥 Multi'}[g.badge]}</span>
         <div class="play-over">▶</div>
       </div>
       <div class="cinfo">
         <h3>${g.name}</h3>
-        <div class="cmeta"><span class="stars">★</span> ${g.rating} • ${g.plays}</div>
+        <div class="cmeta"><span class="stars">★</span> ${g.rating} · ${g.plays}</div>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
-function playGame(url, name) {
+function playGame(url, name, emoji) {
   document.getElementById('overlay').classList.add('open');
   document.getElementById('gameTitle').textContent = name;
-  document.getElementById('loadingScreen').style.display = 'flex';
-  document.getElementById('gameFrame').style.display = 'none';
+  document.getElementById('loadEmoji').textContent = emoji;
+  document.getElementById('loadText').textContent = name + ' load ho rahi hai...';
+  document.getElementById('loadingDiv').style.display = 'flex';
   const frame = document.getElementById('gameFrame');
+  frame.style.display = 'none';
   frame.src = url;
   frame.onload = () => {
-    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('loadingDiv').style.display = 'none';
     frame.style.display = 'block';
   };
   setTimeout(() => {
-    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('loadingDiv').style.display = 'none';
     frame.style.display = 'block';
-  }, 4000);
+  }, 5000);
 }
 
 function closeGame() {
   document.getElementById('overlay').classList.remove('open');
-  document.getElementById('gameFrame').src = '';
+  document.getElementById('gameFrame').src = 'about:blank';
 }
 
 function goFullscreen() {
-  const frame = document.getElementById('gameFrame');
-  if (frame.requestFullscreen) frame.requestFullscreen();
+  const f = document.getElementById('gameFrame');
+  if (f.requestFullscreen) f.requestFullscreen();
+  else if (f.webkitRequestFullscreen) f.webkitRequestFullscreen();
 }
 
 function filterGames(q) {
-  const filtered = games.filter(g => g.name.toLowerCase().includes(q.toLowerCase()) || g.cat.toLowerCase().includes(q.toLowerCase()));
+  const filtered = games.filter(g =>
+    g.name.toLowerCase().includes(q.toLowerCase()) ||
+    g.cat.toLowerCase().includes(q.toLowerCase()));
   render(filtered);
 }
 
 function filterCat(btn, cat) {
   document.querySelectorAll('.cat').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  const filtered = cat === 'All' ? games : games.filter(g => g.cat === cat);
-  render(filtered);
+  render(cat === 'All' ? games : games.filter(g => g.cat === cat));
 }
 
 function playRandom() {
   const g = games[Math.floor(Math.random() * games.length)];
-  playGame(g.url, g.name);
+  playGame(g.url, g.name, g.emoji);
 }
 
 function showToast(msg) {
