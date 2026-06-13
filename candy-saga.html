@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Candy Saga - GameZone</title>
+    <style>
+        body{margin:0;padding:0;background:linear-gradient(-45deg,#ff9a9e,#fecfef,#a1c4fd,#c2e9fb);background-size:400% 400%;animation:gradientBG 15s ease infinite;display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;font-family:'Segoe UI',sans-serif;overflow:hidden;user-select:none;}
+        @keyframes gradientBG{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+        #uiContainer{width:340px;background:rgba(255,255,255,0.85);padding:10px 15px;border-radius:20px;box-shadow:0 8px 32px rgba(31,38,135,0.15);display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;backdrop-filter:blur(4px);border:2px solid rgba(255,255,255,0.4);}
+        .stat-box{text-align:center;font-weight:bold;color:#4a0072;font-size:14px;}.stat-val{font-size:20px;color:#d81b60;display:block;}
+        #gameBoard{background:rgba(255,255,255,0.4);border:6px solid #ff69b4;border-radius:24px;box-shadow:0 15px 35px rgba(0,0,0,0.2);display:grid;grid-template-columns:repeat(6,52px);grid-template-rows:repeat(6,52px);gap:4px;padding:8px;position:relative;}
+        .candy{width:52px;height:52px;display:flex;justify-content:center;align-items:center;font-size:30px;cursor:pointer;transition:transform 0.15s,background-color 0.2s;border-radius:12px;background:rgba(255,255,255,0.6);box-shadow:inset 0 -4px 8px rgba(0,0,0,0.15),inset 0 4px 8px rgba(255,255,255,0.8);}
+        .candy:active{transform:scale(0.9);}.selected{background:rgba(255,105,180,0.6)!important;border:2px solid #ff007f;animation:pulse 0.6s infinite alternate;}
+        @keyframes pulse{0%{transform:scale(1);}100%{transform:scale(1.08);}}
+        .overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(74,0,114,0.9);border-radius:18px;display:flex;flex-direction:column;justify-content:center;align-items:center;color:white;z-index:10;opacity:0;pointer-events:none;transition:opacity 0.4s;}
+        .overlay.show{opacity:1;pointer-events:auto;}.overlay h2{font-size:28px;margin-bottom:10px;color:#ffd700;text-shadow:0 2px 10px rgba(255,215,0,0.5);}
+        .btn{background:linear-gradient(45deg,#ff1493,#ff69b4);border:none;color:white;padding:10px 24px;font-size:16px;font-weight:bold;border-radius:20px;margin-top:15px;cursor:pointer;box-shadow:0 4px 15px rgba(255,20,147,0.4);}
+    </style>
+</head>
+<body>
+    <div id="uiContainer">
+        <div class="stat-box">LEVEL<span class="stat-val" id="levelVal">1</span></div>
+        <div class="stat-box">SCORE<span class="stat-val" id="scoreVal">0</span></div>
+        <div class="stat-box">TARGET<span class="stat-val" id="targetVal">200</span></div>
+        <div class="stat-box">MOVES<span class="stat-val" id="movesVal">25</span></div>
+    </div>
+    <div id="gameContainer" style="position:relative;">
+        <div id="gameBoard"></div>
+        <div id="msgOverlay" class="overlay">
+            <h2 id="overlayTitle">LEVEL UP! 🎉</h2>
+            <p id="overlayDesc">Get ready for the next challenge.</p>
+            <button class="btn" id="overlayBtn" onclick="handleOverlayClick()">NEXT</button>
+        </div>
+    </div>
+<script>
+    const boardSize=6;const candyTypes=['🍓','🍩','🍋','🍏','🍇'];let board=[];let score=0;let level=1;let moves=25;let targetScore=200;let selectedCandy=null;
+    const gameBoard=document.getElementById("gameBoard");const scoreVal=document.getElementById("scoreVal");const levelVal=document.getElementById("levelVal");const targetVal=document.getElementById("targetVal");const movesVal=document.getElementById("movesVal");const msgOverlay=document.getElementById("msgOverlay");
+    let audioCtx=null;function initAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();}
+    function playSound(type){if(!audioCtx)return;if(audioCtx.state==='suspended')audioCtx.resume();const osc=audioCtx.createOscillator();const gain=audioCtx.createGain();osc.connect(gain);gain.connect(audioCtx.destination);if(type==='select'){osc.type='sine';osc.frequency.setValueAtTime(440,audioCtx.currentTime);gain.gain.setValueAtTime(0.05,audioCtx.currentTime);osc.start();osc.stop(audioCtx.currentTime+0.05);}else if(type==='match'){osc.type='triangle';osc.frequency.setValueAtTime(587.33,audioCtx.currentTime);osc.frequency.setValueAtTime(880,audioCtx.currentTime+0.08);gain.gain.setValueAtTime(0.15,audioCtx.currentTime);osc.start();osc.stop(audioCtx.currentTime+0.15);}else if(type==='gameover'){osc.type='sawtooth';osc.frequency.setValueAtTime(180,audioCtx.currentTime);osc.frequency.linearRampToValueAtTime(60,audioCtx.currentTime+0.4);gain.gain.setValueAtTime(0.2,audioCtx.currentTime);osc.start();osc.stop(audioCtx.currentTime+0.4);}}
+    function createBoard(){gameBoard.innerHTML="";board=[];targetScore=150+(level*80);moves=Math.max(12,26-(level*2));scoreVal.innerText=score;levelVal.innerText=level;targetVal.innerText=targetScore;movesVal.innerText=moves;for(let r=0;r<boardSize;r++){let row=[];for(let c=0;c<boardSize;c++){let randomCandy;do{randomCandy=candyTypes[Math.floor(Math.random()*candyTypes.length)];}while((c>=2&&row[c-1]===randomCandy&&row[c-2]===randomCandy)||(r>=2&&board[r-1][c]===randomCandy&&board[r-2][c]===randomCandy));const tile=document.createElement("div");tile.className="candy";tile.innerText=randomCandy;tile.dataset.row=r;tile.dataset.col=c;tile.addEventListener("click",handleCandyClick);gameBoard.appendChild(tile);row.push(tile);}board.push(row);}}
+    function handleCandyClick(e){initAudio();const tile=e.currentTarget;playSound('select');if(!selectedCandy){selectedCandy=tile;selectedCandy.classList.add("selected");}else{let r1=parseInt(selectedCandy.dataset.row);let c1=parseInt(selectedCandy.dataset.col);let r2=parseInt(tile.dataset.row);let c2=parseInt(tile.dataset.col);let isNeighbor=(Math.abs(r1-r2)===1&&c1===c2)||(Math.abs(c1-c2)===1&&r1===r2);if(isNeighbor){let tempText=selectedCandy.innerText;selectedCandy.innerText=tile.innerText;tile.innerText=tempText;moves--;movesVal.innerText=moves;if(!checkAndClearMatches()){setTimeout(()=>{let revText=selectedCandy.innerText;selectedCandy.innerText=tile.innerText;tile.innerText=revText;},250);}}selectedCandy.classList.remove("selected");selectedCandy=null;checkGameStatus();}}
+    function checkAndClearMatches(){let hasMatches=false;let matchGrid=Array(boardSize).fill(null).map(()=>Array(boardSize).fill(false));for(let r=0;r<boardSize;r++){for(let c=0;c<boardSize-2;c++){let c1=board[r][c].innerText,c2=board[r][c+1].innerText,c3=board[r][c+2].innerText;if(c1&&c1===c2&&c1===c3){matchGrid[r][c]=matchGrid[r][c+1]=matchGrid[r][c+2]=true;hasMatches=true;}}}for(let c=0;c<boardSize;c++){for(let r=0;r<boardSize-2;r++){let c1=board[r][c].innerText,c2=board[r+1][c].innerText,c3=board[r+2][c].innerText;if(c1&&c1===c2&&c1===c3){matchGrid[r][c]=matchGrid[r+1][c]=matchGrid[r+2][c]=true;hasMatches=true;}}}if(hasMatches){playSound('match');for(let r=0;r<boardSize;r++){for(let c=0;c<boardSize;c++){if(matchGrid[r][c]){board[r][c].innerText="";score+=10;}}}scoreVal.innerText=score;setTimeout(dropCandies,200);return true;}return false;}
+    function dropCandies(){for(let c=0;c<boardSize;c++){for(let r=boardSize-1;r>=0;r--){if(board[r][c].innerText===""){for(let k=r-1;k>=0;k--){if(board[k][c].innerText!==""){board[r][c].innerText=board[k][c].innerText;board[k][c].innerText="";break;}}}}}for(let c=0;c<boardSize;c++){for(let r=0;r<boardSize;r++){if(board[r][c].innerText===""){board[r][c].innerText=candyTypes[Math.floor(Math.random()*candyTypes.length)];}}}setTimeout(()=>{if(checkAndClearMatches())checkGameStatus();},200);}
+    function checkGameStatus(){if(score>=targetScore){document.getElementById("overlayTitle").innerText="LEVEL UP! 🏆";document.getElementById("overlayDesc").innerText=`Fantastic! You cleared level ${level}.`;document.getElementById("overlayBtn").innerText="START NEXT LEVEL";msgOverlay.classList.add("show");}else if(moves<=0){playSound('gameover');document.getElementById("overlayTitle").innerText="GAME OVER 😭";document.getElementById("overlayDesc").innerText=`Out of moves! Final score: ${score}`;document.getElementById("overlayBtn").innerText="TRY AGAIN 🔄";msgOverlay.classList.add("show");}}
+    function handleOverlayClick(){if(score>=targetScore){level++;score=0;msgOverlay.classList.remove("show");createBoard();}else{level=1;score=0;msgOverlay.classList.remove("show");createBoard();}}
+    window.onload=()=>{createBoard();};
+</script>
+</body>
+</html>
